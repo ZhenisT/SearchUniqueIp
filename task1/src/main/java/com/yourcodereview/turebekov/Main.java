@@ -9,6 +9,6 @@ public class Main {
         Path path = Path.of(filename);
 
         var result = IPFileReader.readFile(path, null);
-        System.out.println("File contains " + result + " IPs");
+        System.out.println("File contains " + result + " unique IPs");
     }
 }
