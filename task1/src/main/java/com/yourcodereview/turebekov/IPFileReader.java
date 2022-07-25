@@ -14,25 +14,23 @@ public final class IPFileReader {
         throw new AssertionError("Cannot be instantiated");
     }
 
-    public static long readFile(Path path, Charset ch) throws IOException {
-        if (path == null)
+    public static Stream<String> getStreamLinesFromFile(Path path, Charset charset) throws IOException {
+        if (path == null) {
             throw new IllegalArgumentException("Path cannot be null");
-
-        if (ch == null)
-            ch = StandardCharsets.UTF_8;
-
-        if (!Files.isReadable(path))
-            throw new AccessDeniedException("File access denied");
-
-        if (!Files.exists(path))
-            throw new NoSuchFileException("File does not exist");
-
-        BitManipulation check = new BitManipulation();
-
-        try (Stream<String> file = Files.lines(path, ch)) {
-            file.parallel().forEach(check::setBits);
         }
 
-        return check.getUniqueIp();
+        if (charset == null) {
+            charset = StandardCharsets.UTF_8;
+        }
+
+        if (!Files.isReadable(path)) {
+            throw new AccessDeniedException("File access denied");
+        }
+
+        if (!Files.exists(path)) {
+            throw new NoSuchFileException("File does not exist");
+        }
+
+        return Files.lines(path, charset);
     }
 }
